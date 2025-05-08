@@ -1,0 +1,28 @@
+{
+  "name": "chronicles-react",
+  "version": "1.0.0",
+  "description": "Chronicles of React by SPO",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:samuelo49/chronicles-react.git"
+  },
+  "keywords": [],
+  "author": "SO",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
+}
