@@ -1,31 +1,86 @@
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
-import resList from "../utils/mockData";
-const Body = () => {
-    const [restaurants, setRestaurants] = useState(resList);
-    
-    return (
-        <div className="body">
-            <div className="filter">
-                <button 
-                className="filter-btn" 
-                onClick={() => {
-                    const filteredList = restaurants?.filter(
-                        (restaurant) => restaurant.data.avgRating > 4.0
-                    );
-                    setRestaurants(filteredList);
-                }}
-                >
-                    Top Rated Restaurants</button>
-            </div>
-            <div className="res-container">
-                {restaurants.map((restaurant) => (
-                    <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+import Shimmer from "./Shimmer";
+import { useEffect, useState } from "react";
 
-                ))}
-            </div>
+const Body = () => {
+    const [restaurants, setRestaurants] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [searchText, setSearchText] = useState("");
+    useEffect(() => {
+      fetchData();
+    }, []);
+  
+
+    const fetchData = async () => {
+      
+        const res = await fetch(
+          "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0843007&lng=80.2704622&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+        );
+  
+        const jsonData = await res.json();
+       
+        console.log(jsonData);
+        const restaurantCard = jsonData?.data?.cards?.find(
+          (card) =>
+            card?.card?.card?.id === "restaurant_grid_listing" ||
+            card?.card?.card?.id === "restaurant_grid_listing_v2"
+        );
+  
+        const fetchedRestaurants =
+          restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+
+        setRestaurants(fetchedRestaurants);
+        setFilteredRestaurants(fetchedRestaurants);
+
+     
+    };
+  
+    return (
+      <div className="body">
+        <div className="filter">
+          <div className="search">
+            <input
+              type="text"
+              placeholder="Search for restaurants"
+              className="search-box"
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+                }}
+            />
+            <button className="search-btn" 
+            onClick={() => { 
+              
+              const filteredRestaurants = restaurants?.filter((res) => res.info.name.toLowerCase().includes(searchText.toLowerCase()));
+              setFilteredRestaurants(filteredRestaurants);
+            } }
+            >Search</button>
+          </div>
+          <button
+            className="filter-btn"
+            onClick={() => {
+              const filtered = restaurants.filter(
+                (restaurant) => restaurant.info.avgRating > 4.0
+              );
+              setRestaurants(filtered);
+            }}
+          >
+            Top Rated Restaurants
+          </button>
         </div>
+  
+        <div className="res-container">
+          {restaurants.length === 0 ? (
+        <Shimmer />
+      ) :(filteredRestaurants.map((restaurant) => (
+            <RestaurantCard
+              key={restaurant.info.id}
+              resData={restaurant}
+            />
+          )))}
+        </div>
+      </div>
     );
-};
+  };
 
 export default Body;
