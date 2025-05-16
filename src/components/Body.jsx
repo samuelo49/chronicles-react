@@ -1,11 +1,13 @@
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Body = () => {
+    const [searchText, setSearchText] = useState("");
     const [restaurants, setRestaurants] = useState([]);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-    const [searchText, setSearchText] = useState("");
+    
     useEffect(() => {
       fetchData();
     }, []);
@@ -13,12 +15,15 @@ const Body = () => {
 
     const fetchData = async () => {
       
+        console.log("Body Rendered");
         const res = await fetch(
           "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0843007&lng=80.2704622&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
   
+        console.log("Fetching data");
         const jsonData = await res.json();
        
+        console.log("Data fetched");
         console.log(jsonData);
         const restaurantCard = jsonData?.data?.cards?.find(
           (card) =>
@@ -73,10 +78,9 @@ const Body = () => {
           {restaurants.length === 0 ? (
         <Shimmer />
       ) :(filteredRestaurants.map((restaurant) => (
-            <RestaurantCard
-              key={restaurant.info.id}
-              resData={restaurant}
-            />
+          <Link to={"/restaurants/" + restaurant.info.id} key={restaurant.info.id}>
+            < RestaurantCard resData={restaurant} />
+          </Link>
           )))}
         </div>
       </div>

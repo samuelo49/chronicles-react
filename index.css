@@ -91,3 +91,61 @@
 .filter {
     display: flex;
 }
+
+.menu-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.menu-list {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+}
+
+.menu-item-image img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.menu-item-details {
+    text-align: center;
+}
+
+.menu-item-details h4 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.menu-item-details p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.menu-item-details strong {
+    color: #000;
+    font-size: 16px;
+}
